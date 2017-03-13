@@ -1,16 +1,16 @@
 # DrupalDevDays-Ionic-Workshop
 
-[1. Installing required software.](#1.-installing-required-software)
+[1. Installing required software.](#1-installing-required-software)
 
-   [1.1 Installing Nodejs.](#1.1-installing-Nodejs)
+   [1.1 Installing Nodejs.](#11-installing-Nodejs)
+
+   [1.2 Installing yarn (optional).](#12-installing-yarnoptional)
+
+   [1.3 Installing Ionic.](#13-installing-ionic)
+
+   [1.4 Installing Android SDK.](#14-installing-android-sdk)
    
-   [1.2 Installing yarn.](#1.2-installing-yarn)
-   
-   [1.3 Installing Ionic.](#1.3-installing-ionic)
-   
-   [1.4 Installing Android SDK.](#1.4-installing-android-sdk)
-   
-[2. Create basic Ionic project.](#2.-create-basic-ionic-project)
+[2. Create basic Ionic project.](#2-create-basic-ionic-project)
 
 ##1. Installing required software
  
@@ -54,7 +54,7 @@ or just [download](http://nodejs.org/#download) the installer
 
 Follow the instructions from the [nodejs.org](https://nodejs.org/es/download/package-manager/) web.
 
-###1.2 Installing yarn(optional)
+###1.2 Installing yarn (optional)
 
 Execute:
 
