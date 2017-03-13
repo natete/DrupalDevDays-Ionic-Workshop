@@ -131,3 +131,5 @@ Once everything is installed you should be able to view your application using t
 ```bash
 ionic serve
 ```
+
+![basic image](./images/basic_app.png)
