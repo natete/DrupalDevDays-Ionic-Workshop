@@ -109,7 +109,7 @@ ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
 To create the ionic application we will use the Ionic CLI.
 
 ```bash
-ionic start myApp sidemenu --skip-npm --v2
+ionic start DrupalDevDays sidemenu --skip-npm --v2
 ```
 
 This will create a basic working application. Go to the myApp directory and download the node dependencies of the 
