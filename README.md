@@ -132,4 +132,6 @@ Once everything is installed you should be able to view your application using t
 ionic serve
 ```
 
+You should now have something like this if you go to localhost:8100
+
 ![basic image](./images/basic_app.png)
