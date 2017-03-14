@@ -1,133 +1,22 @@
-# DrupalDevDays-Ionic-Workshop
+# Step 01 Preparing the application
 
-[1. Installing required software.](#1-installing-required-software)
+[**1. Overview**](#1-overview)
 
-   [1.1 Installing Nodejs.](#11-installing-nodejs)
+## 1. Overview
 
-   [1.2 Installing yarn (optional).](#12-installing-yarn-optional)
+Our application lives in the src folder and inside of this folder there are two folders we must pay attention to by now:
 
-   [1.3 Installing Ionic.](#13-installing-ionic)
+* **app**: it's the main folder of the app, where the application goes to start and where we configure the main 
+module of our application. This folder contains five files:
 
-   [1.4 Installing Android SDK.](#14-installing-android-sdk)
-   
-[2. Create basic Ionic project.](#2-create-basic-ionic-project)
+  * _app.component.ts_: is the controller of this first view. This is where we will define the items of the side menu
+   and where we will take the actions needed on the application startup.
+  * _app.html_: is the first view to be loaded. In our case it's where the side menu is defined.
+  * _app.module_: this is where we configure the Angular module of the applications. We must declare here the pages 
+   and providers we use in the application.
+  * _app.scss_: where we define the global styles of the application.
+  * _main.ts_: where the underlying Angular application is bootstrapped.
 
-##1. Installing required software
- 
-###1.1 Installing Nodejs
-
-##### Using linux
-
-Install required packages if not installed.
-
-```bash
-sudo apt-get install python-software-properties
-```
-
-Execute the following curl to add the needed PPA
-
-```bash
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-```
-
-Now install nodejs
-
-```bash
-sudo apt-get install -y nodejs
-```
-
-##### Using OSX
-
-Using Homebrew
-
-```bash
-brew install node
-```
-
-or just [download](http://nodejs.org/#download) the installer
-
-##### Using Windows
-
-[Download](http://nodejs.org/#download)  the installer.
-
-##### Other OSs and further instructions
-
-Follow the instructions from the [nodejs.org](https://nodejs.org/es/download/package-manager/) web.
-
-###1.2 Installing yarn (optional)
-
-Execute:
-
-```bash
-npm i -g yarn
-```
-
-It might require sudo.
-
-###1.3 Installing ionic
-
-Using yarn
-
-```bash
-yarn global add ionic cordova
-```
-
-Using npm
-
-```bash
-npm i -g ionic cordova
-```
-
-This will install both Ionic and Cordova CLI globally. Check everything is working fine executing:
-
-```bash
-ionic -v
-```
-
-###1.4 Installing Android SDK
-
-You can install Android Studio which has Android SDK files in it or just install the command line tools.
-
-#####Using Linux
-
-Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-linux.zip) and unzip the file anywhere in
- your system. Finally add the following paths to your PATH env variables (editing .bashrc)
- 
-```bash
-ANDROID_HOME=path-to-the-folder-where-android-was-unzipped/android-sdk-linux
-ANDROID_TOOLS=$ANDROID_HOME/tools
-ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
-```
-
-#####Using OSX
-
-
-#####Using Windows
-
-##2. Create basic Ionic project
-
-To create the ionic application we will use the Ionic CLI.
-
-```bash
-ionic start DrupalDevDays sidemenu --skip-npm --v2
-```
-
-This will create a basic working application. Go to the myApp directory and download the node dependencies of the 
-application.
-
-#####Using yarn
-
-```
-yarn
-```
-
-#####Using npm
-```
-npm i
-```
-
-Once everything is installed you should be able to view your application using the development server.
-
-```bash
-ionic serve
-```
+* **pages**: it's where our pages live (we can associate the idea of a page with the idea of a view o our app). Each 
+page, usually is built with three files, the markup file, the styles file and the typescript file. This last file 
+acts as the controller of the view and is where we add behavior to the view.
