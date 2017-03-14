@@ -112,7 +112,7 @@ To create the ionic application we will use the Ionic CLI.
 ionic start DrupalDevDays sidemenu --skip-npm --v2
 ```
 
-This will create a basic working application. Go to the myApp directory and download the node dependencies of the 
+This will create a basic working application. Go to the DrupalDevDays folder and download the node dependencies of the 
 application.
 
 ##### Using yarn
