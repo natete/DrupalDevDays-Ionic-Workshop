@@ -4,7 +4,12 @@
 
 ## 1. Overview
 
-Our application lives in the src folder and inside of this folder there are two folders we must pay attention to by now:
+Our application lives in the src folder and should look like this:
+
+![Folders structure](./images/folders_structure.png)
+ 
+Inside of this folder there are two folders we must pay attention to by now:
+
 
 * **app**: it's the main folder of the app, where the application goes to start and where we configure the main 
 module of our application. This folder contains five files:
@@ -18,5 +23,7 @@ module of our application. This folder contains five files:
   * _main.ts_: where the underlying Angular application is bootstrapped.
 
 * **pages**: it's where our pages live (we can associate the idea of a page with the idea of a view o our app). Each 
-page, usually is built with three files, the markup file, the styles file and the typescript file. This last file 
-acts as the controller of the view and is where we add behavior to the view.
+page, usually is built with three files:
+  * _the markup file_: a html file with the markup of the page.
+  * _the styles file_ a scss file with the styles of the page.
+  * _the typescript file_: this file acts as the controller of the view and is where we add behavior to the view.
