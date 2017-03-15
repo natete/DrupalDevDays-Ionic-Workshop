@@ -32,6 +32,7 @@ We will start declaring a couple of constants that we will need, the base url fo
 
 No we create a method to get a program by its date. This method receives a Moment object representing the date and returns an Observable, which is:
 > A representation of any set of values over any amount of time. This the most basic building block of RxJS.
+
 It's, then, a construct of [RxJs](http://reactivex.io/rxjs/) the javascript implementation for **Reactive Programming**. 
 Our method, for now, just makes the requests and gets the data from the response:
 
