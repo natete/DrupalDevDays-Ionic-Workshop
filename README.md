@@ -2,7 +2,7 @@
 
 [**1. Getting data from Drupal**](#1-getting-data-from-drupal)
 
-[**1. Basic structure**](#1-basic-structure)
+[**2. Transforming the response**](#2-transforming-the-response)
 
 ## 1. Getting data from Drupal
 
@@ -60,5 +60,54 @@ You should now be getting something like this:
 
 ![first_request](./images/first_request.png)
 
-## 1. Basic structure
+## 2. Transforming the response
 
+Now that we have the data from the Drupal backend we need to adapt it to our need. Inspecting the response we can see that there are three different types of entities mixed in the program: sessions, keynotes and breaks. As for our needs we can consider all of them as a single entity or class: **Session**.
+Then we need to define this Session as an _interface_ or as a _class_. We will pick a class so we delegate the responsibility of creating an instance of the class from the raw response to the class itself. We will create a new session.ts typescript file in new **shared** folder.
+This is what we need right now, we will refactor the class as we need it.
+
+```typescript
+export class Session {
+  id: string;
+  title: string;
+  startTime: string;
+  endTime: string;
+  level?: string;
+  target?: string;
+  type?: string;
+  venue?: string;
+}
+```
+
+We can add now a constructor that takes one of the objects from Drupal an returns a Session object.
+
+```typescript
+  constructor(rawSession: any = {}) {
+    const times = rawSession.field_start_end_period ? rawSession.field_start_end_period.split(' - ') : null;
+
+    this.id = rawSession.nid;
+    this.title = rawSession.field_break_title || rawSession.title;
+    this.startTime = times && times[0];
+    this.endTime = times && times[1];
+    this.level = rawSession.field_session_level;
+    this.target = rawSession.field_session_track_type;
+    this.type = rawSession.field_session_type;
+    this.venue = rawSession.field_break_description || rawSession.field_room;
+  }
+```
+
+We can use this new class definition to map our response adding a new map statement in our service and change the returned type to Observable<Session[]>:
+```typescript
+  getProgram(date: Moment): Observable<Session[]> {
+    const programId = this.dates[date.format('YYYY-MM-D')];
+
+    return this.http
+               .get(`${this.drupalUrl}/${programId}`)
+               .map(res => res.json())
+               .map(rawSessions => rawSessions.map(rawSession => new Session(rawSession)));
+  }
+```
+We also can take advantage of the typing and sort the response by its starting date adding a new map statement:
+```typescript
+.map(sessions => sessions.sort((s1, s2) => s1.startTime.localeCompare(s2.startTime)))
+```
