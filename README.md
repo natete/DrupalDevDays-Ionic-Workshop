@@ -6,6 +6,10 @@
 
 [**3. Populate the side menu**](#3-populate-the-side-menu)
 
+[**4. Enable navigation to the program page**](#4-enable-navigation-to-the-program-page)
+
+[**5. Navigation params**](#5-navigation-params)
+
 ## 1. Overview
 
 Our application lives in the src folder and should look like this:
@@ -129,12 +133,12 @@ import * as moment from 'moment';
 Now we have available moment in this file and we can create an array of dates like this:
 
 ```typescript
-pages = [
-    { date: moment('2017-03-21') },
-    { date: moment('2017-03-22') },
-    { date: moment('2017-03-23') },
-    { date: moment('2017-03-24') },
-    { date: moment('2017-03-25') }
+dates = [
+  moment('2017-03-21'),
+  moment('2017-03-22'),
+  moment('2017-03-23'),
+  moment('2017-03-24'),
+  moment('2017-03-25')
 ];
 ```
 
@@ -148,9 +152,9 @@ and
 
 ```typescript
 // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Program Page', component: ProgramPage }
-    ];
+this.pages = [
+  { title: 'Program Page', component: ProgramPage }
+];
 ```
 
 Next we must edit the html where the side menu lives (_app.html_). First we will change the ion-title from **Menu** to **Seville DrupalDevDays**. Then we will add a header to the ion-list:
@@ -159,7 +163,7 @@ Next we must edit the html where the side menu lives (_app.html_). First we will
 <ion-list-header>Program</ion-list-header>
 ```
 
-Now we proceed to arrange our dates buttons. We must keep the _ngFor_ to iterate through our pages but we will change the name of the each item from _p_ to _page_ to be more concise. Since we don't have a behavior yet for this buttons we remove from the button the action associated with the click event:
+Now we proceed to arrange our dates buttons. We must keep the _ngFor_ to iterate through our dates so we will change the iteration to ```let date of dates```. Since we don't have a behavior yet for this buttons we remove from the button the action associated with the click event:
   
 ```typescript
 (click)="openPage(p)"
@@ -174,27 +178,169 @@ Now we proceed to arrange our dates buttons. We must keep the _ngFor_ to iterate
  Now we start to make things look like we want to. We will set an icon and the date properly formatted of each available page. To add the icon we will add a _ion-icon_ component and we will set the attribute name to _calendar_. You have a [huge set of icons](http://ionicframework.com/docs/v2/ionicons/) available to be used out of the box. We want to keep on the left of the button, so we will add the icon-left attribute (actually it is a directive, an Angular construct to extend html).
   
 ```html
-<button menuClose ion-item *ngFor="let page of pages">
+<button menuClose ion-item *ngFor="let date of dates">
   <ion-icon name="calendar"></ion-icon>
 </button>
 ```
 
-Finally we add the text of the button, the properly formatted date. To do so we will use the **page** variable exposed by the ngFor. This variable represents an item of the _pages_ array we defined previously. To print the content of a variable or expression we wrap it in double curly braces **{{}}**. We will take advantage of momentjs features to format the date properly.
+Finally we add the text of the button, the properly formatted date. To do so we will use the **date** variable exposed by the ngFor. This variable represents an item of the _dates_ array we defined previously. To print the content of a variable or expression we wrap it in double curly braces **{{}}**. We will take advantage of momentjs features to format the date properly.
 
 ```typescript
-{{page.date.format('DD dddd')}}
+{{date.format('DD dddd')}}
 ```
 
 The final touch is display this date in uppercase. We will use, _text-uppercase_ another provided directive utility to achieve it (you can check the available utils directives [here](http://ionicframework.com/docs/v2/theming/css-utilities/)). We will surround the text of the button in a _span_ with the mentioned attribute.
 If everything went right we should have:
   
 ```html
-<button menuClose ion-item *ngFor="let page of pages" icon-left text-uppercase>
+<button menuClose ion-item *ngFor="let date of dates" icon-left text-uppercase>
   <ion-icon name="calendar"></ion-icon>
-  <span text-uppercase>{{page.date.format('DD dddd')}}</span>
+  <span text-uppercase>{{date.format('DD dddd')}}</span>
 </button>
 ```
 
 After these changes our menu should be looking something like this in Android:
 
 ![menu](./images/menu.png)
+
+## 4. Enable navigation to the program page
+
+Now we want our side menu buttons to do something. Their task is navigate to a date of the schedule. Then we will start working on our **app.component.ts** file. We create a goToProgram method that receives target the date.
+
+```typescript
+goToProgram(date: Moment) {
+
+}
+```
+
+In order to use the moment type we must import it by adding 
+```typescript
+import Moment = moment.Moment;
+```
+
+Navigation is managed by the **NavController**. We already have **Nav** (a declarative component for a NavController) available using a feature of Angular 2 that allows a component to get access to a child component and its methods. In this case we use the Nav component, an Ionic built-in component. 
+
+Basic navigation in ionic works like a stack and we can use it in two ways:
+* **nav.setRoot(_page_)**: we use this method to change the root of the application, thus disallowing to go back and clearing the pile of navigation.
+* **navCtrl.push(_page_) | navCtrl.pop()**: we use these methods to add or remove pages from the navigation stack.
+ 
+The Navigation API is much more complex than that, you can refer to [Nav](https://ionicframework.com/docs/v2/api/components/nav/Nav/) and [NavController](https://ionicframework.com/docs/v2/api/navigation/NavController/) documentation to explore more navigation options.
+
+In this case we want the program page we want the target program page to be the new root of our application, so our _goToProgram_ method will look like this:
+  
+```typescript
+goToProgram(date: Moment) {
+  this.nav.setRoot(ProgramPage, date);
+}
+```
+
+To use this method we will attach this method to the click event of the button. In Angular 2 and Ionic 2 event binding is done by adding the event name surrounded by parenthesis (```(eventName)="methodToHandleTheEvent($event, params)"```). So in our case our button must look:
+```html
+<button menuClose ion-item *ngFor="let date of dates" (click)="goToProgram(date)" icon-left>
+```
+
+Since we are controlling the root of our application by ourselves, we must remove old default navigation controls. We must remove:
+```[root]="rootPage"```
+from the _ion-nav_ tag in the _app.html_ and
+```typescript
+rootPage: any = ProgramPage;
+``` 
+from the _app.component.ts_ file.
+
+We must also remove the legacy navigation method:
+```typescript
+openPage(page) {
+  // Reset the content nav to have just this page
+  // we wouldn't want the back button to show in this scenario
+  this.nav.setRoot(page.component);
+}
+```
+
+Finally we must declare a first page to be set as the root of the application on load. We can set just the first date as the root of our application or go a little bit further and set the root page according to the date. We will set the current date page as the root if it exists or the first page otherwise.
+We can achieve it easily using moment. We will create a private method to handle this and we will call this method within the platform.ready method:
+Our app.component.ts should look like this by now:
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform } from 'ionic-angular';
+import { StatusBar, Splashscreen } from 'ionic-native';
+import * as moment from 'moment';
+import { ProgramPage } from '../pages/program/program';
+import Moment = moment.Moment;
+
+@Component({
+  templateUrl: 'app.html'
+})
+export class MyApp {
+  @ViewChild(Nav) nav: Nav;
+
+  dates = [
+    moment('2017-03-21'),
+    moment('2017-03-22'),
+    moment('2017-03-23'),
+    moment('2017-03-24'),
+    moment('2017-03-25')
+  ];
+
+  constructor(public platform: Platform) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready()
+        .then(() => {
+          // Okay, so the platform is ready and our plugins are available.
+          // Here you can do any higher level native things you might need.
+          StatusBar.styleDefault();
+          Splashscreen.hide();
+
+          this.goToFirstDay();
+        });
+  }
+
+  goToProgram(date: Moment) {
+    this.nav.setRoot(ProgramPage, date);
+  }
+
+  private goToFirstDay() {
+    const now = moment();
+
+    this.nav.setRoot(ProgramPage, this.dates.find(date => now.isSame(date)) || this.dates[0]);
+  }
+}
+```
+
+
+## 5. Navigation params
+
+Now we are able to use our side menu but we don't see any effect. We need to use the **navigation params**.
+The second parameter we passed to the _setRoot_ method is the navigation params. This is simple way to communicate pages.
+So, next we can start working on our **ProgramPage** to use this parameters.
+
+First of all we will remove the example content of the **program.html** file. This content is inside of the _ion-content_ tag. We must also remove the _padding_ attribute from the ion-content since we don't want any padding in our component.
+The header bar is working fine for us but we don't want the _Page One_ title. Instead we want to show the date of the Program Page we are.
+So we substitute this Page One with the content of a variable we will create called **title**. Again, to print the content of this variable we need to wrap it in double curly braces.
+```
+{{title}}}
+```
+
+Next we must declare and populate this _title_ variable. To do so we must work on **program.ts** and add the variable declaration:
+```typescript
+title: string;
+```
+
+Then we must populate it with the data we receive from the navigation. To access this data we need an instance of **NavParams**. We will use dependency injection to get it, so we must add a second parameter to the constructor leaving our constructor like this:
+```typescript
+constructor(public navCtrl: NavController,
+              private navParams: NavParams) { }
+```
+Remember to add the corresponding import (```import { NavController, NavParams } from 'ionic-angular';```) if your IDE doesn't do it for you.
+Now we can access the params of the navigation and use them to populate our title variable adding this to the constructor:
+```typescript
+this.title = (this.navParams.data as Moment).format('DD dddd');
+```
+
+_navParams.data_ is of type _any_ so we must cast it to _Moment_ to access its methods and format the date properly to be shown in the title. We do this using the **as** reserved word. (Remember to add the needed momentjs imports as we did before).
+ 
+Now we can check how the title is changing when we select a different date.
+
+![program-title](./images/program-title.png)
