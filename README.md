@@ -331,7 +331,7 @@ title: string;
 Then we must populate it with the data we receive from the navigation. To access this data we need an instance of **NavParams**. We will use dependency injection to get it, so we must add a second parameter to the constructor leaving our constructor like this:
 ```typescript
 constructor(public navCtrl: NavController,
-              private navParams: NavParams) { }
+            private navParams: NavParams) { }
 ```
 Remember to add the corresponding import (```import { NavController, NavParams } from 'ionic-angular';```) if your IDE doesn't do it for you.
 Now we can access the params of the navigation and use them to populate our title variable adding this to the constructor:
@@ -344,3 +344,5 @@ _navParams.data_ is of type _any_ so we must cast it to _Moment_ to access its m
 Now we can check how the title is changing when we select a different date.
 
 ![program-title](./images/program-title.png)
+
+Next step will be to provide some content to our **Program Page**. Jump to the next branch to keep coding.
