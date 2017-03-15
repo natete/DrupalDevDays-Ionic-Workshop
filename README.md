@@ -197,3 +197,6 @@ If everything went right we should have:
 </button>
 ```
 
+After these changes our menu should be looking something like this in Android:
+
+![menu](./images/menu.png)
