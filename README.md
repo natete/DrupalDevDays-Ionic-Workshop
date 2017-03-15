@@ -115,9 +115,7 @@ First we will create an array with the options we want to show in the menu. It w
 ```bash
 yarn add moment
 ```
-
 or
-
 ```bash
 npm i --save moment
 ```
@@ -187,13 +185,13 @@ Finally we add the text of the button, the properly formatted date. To do so we 
 {{page.date.format('DD dddd')}}
 ```
 
-The final touch is display this date in uppercase. We will use, _text-uppercase_ another provided directive utility to achieve it (you can check the available utils directives [here](http://ionicframework.com/docs/v2/theming/css-utilities/)).
+The final touch is display this date in uppercase. We will use, _text-uppercase_ another provided directive utility to achieve it (you can check the available utils directives [here](http://ionicframework.com/docs/v2/theming/css-utilities/)). We will surround the text of the button in a _span_ with the mentioned attribute.
 If everything went right we should have:
   
 ```html
 <button menuClose ion-item *ngFor="let page of pages" icon-left text-uppercase>
   <ion-icon name="calendar"></ion-icon>
-  {{page.date.format('DD dddd')}}
+  <span text-uppercase>{{page.date.format('DD dddd')}}</span>
 </button>
 ```
 
