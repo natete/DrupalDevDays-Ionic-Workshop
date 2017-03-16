@@ -170,7 +170,7 @@ The color attribute is another feature of Ionic that allows to assing theme defi
 Let's do our list look a little bit better by adding an image to represent the target of each session.
 But first things first, download [this zip file](./images.zip) and unzip it in the _src/assets_ folder. You should end up with a _src/assets/images_ folder containing the nine image files we will be using.
 We will use the [avatar-list](http://ionicframework.com/docs/v2/components/#avatar-list) to show this image. This image will deppend on the type and track of session.
-To achieve this we will create a method in our page class that will return the url of the image depending on the session:
+To achieve this we will create a method in our ProgramPage class that will return the url of the image depending on the session:
 ```typescript
   getImage(session: Session): string {
     if (session.type) {
