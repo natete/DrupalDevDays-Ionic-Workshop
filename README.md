@@ -4,6 +4,8 @@
 
 [**2. Transforming the response**](#2-transforming-the-response)
 
+[**3. Representing data**](#3-representing-data)
+
 ## 1. Getting data from Drupal
 
 It's time to give some content to our **Program Page**. But to do it we must get data from somewhere and here is where the RESTful api we prepared on Drupal comes into play.
@@ -19,7 +21,7 @@ This class the Ionic CLI created for us has already injected the Http class (we 
 We will start declaring a couple of constants that we will need, the base url for oure requests and an object to relate dates with Drupal nodes.
 
 ```typescript
-  private readonly drupalUrl = 'https://seville2017.drupaldays.org/api';
+  private readonly drupalUrl = 'https://seville2017.drupaldays.org/api/program';
 
   private readonly dates = {
     '2017-03-21': 126,
@@ -83,12 +85,12 @@ We can add now a constructor that takes one of the objects from Drupal an return
 
 ```typescript
   constructor(rawSession: any = {}) {
-    const times = rawSession.field_start_end_period ? rawSession.field_start_end_period.split(' - ') : null;
+    const times = rawSession.field_start_end_period ? rawSession.field_start_end_period.split('-') : null;
 
     this.id = rawSession.nid;
     this.title = rawSession.field_break_title || rawSession.title;
-    this.startTime = times && times[0];
-    this.endTime = times && times[1];
+    this.startTime = times && times[0].trim();
+    this.endTime = times && times[1].trim();
     this.level = rawSession.field_session_level;
     this.target = rawSession.field_session_track_type;
     this.type = rawSession.field_session_type;
@@ -111,3 +113,27 @@ We also can take advantage of the typing and sort the response by its starting d
 ```typescript
 .map(sessions => sessions.sort((s1, s2) => s1.startTime.localeCompare(s2.startTime)))
 ```
+
+## 3. Representing data
+
+We're ready to show some data in our page. We will use [a Ionic 2 list](http://ionicframework.com/docs/v2/components/#lists) in combination with [a Ionic Virtual Scroll](http://ionicframework.com/docs/v2/api/components/virtual-scroll/VirtualScroll/) to be more performant.
+The first step will be to set the data we get from the service into a variable to be accessible from the view. We declare a _sessions_ variable of type _Session[]_ and then we swap the console.log statement for an assignation, ```this.sessions = program```.
+We can then start with the markup, so we go to the program.html file. First we will define **ion-list** element  with the needed attributes for the **virtualScroll** with a **ion-item** with the **virtuslItem** attribute inside and we will show the title of the session:
+
+```html
+<ion-list [virtualScroll]="sessions">
+  <ion-item *virtualItem="let session">
+    <h2 [innerHtml]="session.title" text-wrap></h2>  
+  </ion-item>
+</ion-list>
+```
+
+This syntax is a little bit special. We use square brackets in an attribute to tell Angular that the value we are assigning to the attribute is a variable. In this case we are assigning to the virtualItem attribute (it's a directive, actually) the array of sessions to iterate through.
+The virtual scroll will set a fixed number of items in the DOM according with the size of the screen and the size of the items and handle the scroll just changing the content of these items. Having a DOM with less item increases performance dramatically since we limit the number of event listeners.
+The asterisk syntax is used by directives that altere the DOM (as the ngFor was doing before). The **virtualItem** attribute works with the previous **virtualScroll** and provides a way to define the variable we use in the iteration.
+Finally we use innerHtml to correctly show the titles because they contain characters defined by its ASCII code and text-wrap to allow the text to spread to as many lines as it needs.
+It should look like this by now:
+
+![basic_list](./images/basic_list.png)
+
+
