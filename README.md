@@ -77,7 +77,7 @@ export class Session {
   startTime: string;
   endTime: string;
   level?: string;
-  target?: string;
+  track?: string;
   type?: string;
   venue?: string;
 }
@@ -94,7 +94,7 @@ We can add now a constructor that takes one of the objects from Drupal an return
     this.startTime = times && times[0].trim();
     this.endTime = times && times[1].trim();
     this.level = rawSession.field_session_level;
-    this.target = rawSession.field_session_track_type;
+    this.track = rawSession.field_session_track_type;
     this.type = rawSession.type;
     this.venue = rawSession.field_break_description || rawSession.field_room;
   }
@@ -167,22 +167,22 @@ The color attribute is another feature of Ionic that allows to assing theme defi
 
 ## 4. Making things pretty
 
-Let's do our list look a little bit better by adding an image to represent the target of each session.
+Let's do our list look a little bit better by adding an image to represent the track of each session.
 But first things first, download [this zip file](./images.zip) and unzip it in the _src/assets_ folder. You should end up with a _src/assets/images_ folder containing the nine image files we will be using.
 We will use the [avatar-list](http://ionicframework.com/docs/v2/components/#avatar-list) to show this image. This image will deppend on the type and track of session.
 To achieve this we will create a method in our ProgramPage class that will return the url of the image depending on the session:
 ```typescript
   getImage(session: Session): string {
     if (session.type) {
-      const imageName: string = this.getImageNameFromTarget(session.target);
+      const imageName: string = this.getImageNameFromTrack(session.track);
       return `assets/images/${imageName}.svg`
     } else {
       return 'assets/images/poison.svg';
     }
   }
 
-  private getImageNameFromTarget(target: string): string {
-    const result = target || 'other';
+  private getImageNameFromTrack(track: string): string {
+    const result = track || 'other';
     return result.toLowerCase()
                  .replace(' ', '-');
   }
