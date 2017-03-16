@@ -35,7 +35,7 @@ export class ProgramPage {
 
   getImage(session: Session): string {
     if (session.type) {
-      const imageName: string = this.getImageNameFromTarget(session.target);
+      const imageName: string = this.getImageNameFromTarget(session.track);
       return `assets/images/${imageName}.svg`
     } else {
       return 'assets/images/poison.svg';
