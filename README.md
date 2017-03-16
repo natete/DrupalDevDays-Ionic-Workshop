@@ -175,7 +175,7 @@ Now we proceed to arrange our dates buttons. We must keep the _ngFor_ to iterate
  {{p.title}}
  ```
  
- Now we start to make things look like we want to. We will set an icon and the date properly formatted of each available page. To add the icon we will add a _ion-icon_ component and we will set the attribute name to _calendar_. You have a [huge set of icons](http://ionicframework.com/docs/v2/ionicons/) available to be used out of the box. We want to keep on the left of the button, so we will add the icon-left attribute (actually it is a directive, an Angular construct to extend html).
+ Now we start to make things look like we want to. We will set an icon and the date properly formatted of each available page. To add the icon we will add a _ion-icon_ component and we will set the attribute name to _calendar_. You have a [huge set of icons](http://ionicframework.com/docs/v2/ionicons/) available to be used out of the box. We want to keep on the left of the button, so we will add the icon-left attribute.
   
 ```html
 <button menuClose ion-item *ngFor="let date of dates">
@@ -189,7 +189,7 @@ Finally we add the text of the button, the properly formatted date. To do so we 
 {{date.format('DD dddd')}}
 ```
 
-The final touch is display this date in uppercase. We will use, _text-uppercase_ another provided directive utility to achieve it (you can check the available utils directives [here](http://ionicframework.com/docs/v2/theming/css-utilities/)). We will surround the text of the button in a _span_ with the mentioned attribute.
+The final touch is display this date in uppercase. We will use, _text-uppercase_ another provided attribute utility to achieve it (you can check the available utils attributes [here](http://ionicframework.com/docs/v2/theming/css-utilities/)). We will surround the text of the button in a _span_ with the mentioned attribute.
 If everything went right we should have:
   
 ```html
