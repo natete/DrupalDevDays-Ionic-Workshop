@@ -224,4 +224,6 @@ This is what we have so far.
 
 ![detailed_list](./images/detailed_list.png)
 
-Time to start working on the **Session Page**. Jump to the next branch to keep coding.
+The final touch, we can see that Ionic is asking as to provide an "approxItemHeight" input to ensure proper virtual scroll rendering, so we will add this attribute to the _ion-list_ element with a value of 106px, the most common height of our item. This will allow Ionic calculate the number of items it can display.
+
+Now we're ready to start working on the **Session Page**. Jump to the next branch to keep coding.
