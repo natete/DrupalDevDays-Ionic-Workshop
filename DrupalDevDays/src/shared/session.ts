@@ -4,7 +4,7 @@ export class Session {
   startTime: string;
   endTime: string;
   level?: string;
-  target?: string;
+  track?: string;
   type?: string;
   venue?: string;
 
@@ -16,7 +16,7 @@ export class Session {
     this.startTime = times && times[0].trim();
     this.endTime = times && times[1].trim();
     this.level = rawSession.field_session_level;
-    this.target = rawSession.field_session_track_type;
+    this.track = rawSession.field_session_track_type;
     this.type = rawSession.type;
     this.venue = rawSession.field_break_description || rawSession.field_room;
   }
