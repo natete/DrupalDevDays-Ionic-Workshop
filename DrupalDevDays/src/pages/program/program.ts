@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import * as moment from 'moment';
 import { ProgramService } from '../../providers/program.service';
-import { Session } from '../../providers/session';
+import { Session } from '../../shared/session';
 import Moment = moment.Moment;
 
 @Component({
