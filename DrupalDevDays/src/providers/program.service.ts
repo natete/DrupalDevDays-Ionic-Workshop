@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
-import { Session } from './session';
+import { Session } from '../shared/session';
 import Moment = moment.Moment;
 
 @Injectable()
