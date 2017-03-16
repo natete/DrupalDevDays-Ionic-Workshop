@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list [virtualScroll]="sessions" [headerFn]="getStartTime">
+  <ion-list [virtualScroll]="sessions" [headerFn]="getStartTime" approxItemHeight="106px">
 
     <ion-item-divider *virtualHeader="let startTime" color="light">{{startTime}}</ion-item-divider>
 
