@@ -1,4 +1,4 @@
-///<reference path="session.ts"/>
+///<reference path="session.service.ts"/>
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
