@@ -5,6 +5,9 @@
 [**2. Getting the session details from Drupal**](#2-getting-the-session-details-from-drupal)
 
 [**3. Displaying session details**](#3-displaying-session-details)
+
+[**4. Adding speakers**](#4-adding-speakers)
+
 ## 1. Enable navigation to the Session Page
 
 First things first. We need a way to navigate to the Session page. In this case we don't want to set the root of the application, instead we want to push a new page to our navigation stack.
@@ -70,7 +73,6 @@ export class SessionDetails {
   level?: string;
   track?:string;
   room?: string;
-  speakers?: any[];
   
   constructor(rawSessionDetails: any = {}) {
     this.title = rawSessionDetails.title;
@@ -79,11 +81,9 @@ export class SessionDetails {
     this.level = rawSessionDetails.field_session_level;
     this.track = rawSessionDetails.field_session_track_type;
     this.room = rawSessionDetails.field_room;
-    this.speakers = [];
   }
 }
 ```
-We will take care of the speakers later.
 We can map the raw response to our own class as we did before so we have a SessionDetails instance in our SessionPage class to work with and we can start to display things.
 
 ## 3. Displaying session details
@@ -152,3 +152,53 @@ page-session {
 
 This should produce something similar to this:
 ![session_details](./images/session_details.png)
+
+## 4. Adding speakers
+
+We are showing the details of the sessions but there is a thing still missing, the speakers. The speakers information comes in two flavours: the keynote speakers and the session speakers. For the firsts we get all the information from the request to the session details but for the later we just get the array of the speakers ids.
+We will take care of the keynote speakers first. We start by creating a new **Speaker** class in a _speaker.ts_ file in our shared folder with the following fields:
+
+```typescript
+export class Speaker {
+  name: string;
+  avatar: string;
+  position?: string;
+  bio?: string;
+}
+```
+
+Keynote speakers info has details about the company they work for so we should define a type to model it as well. We will create an interface in this case in a _company.ts_ file in our shared folder.
+```typescript
+export interface Company {
+  name: string;
+  bio: string;
+  logo: string;
+}
+```
+
+Now we can add the company field to the **Speaker** class. Next we can create our constructor to map the speaker from the raw data coming from the server:
+```typescript
+constructor(rawSpeaker: any ={}) {
+  this.name = rawSpeaker.field_speaker_full_name;
+  this.avatar = rawSpeaker.speaker_image;
+  this.position = rawSpeaker.field_speaker_position;
+  this.bio = rawSpeaker.field_speaker_bio;
+  
+  if (typeof rawSpeaker.field_company_name !== 'undefined') {
+    this.company = {
+      name: rawSpeaker.field_company_name,
+      logo: rawSpeaker.company_logo,
+      bio: rawSpeaker.field_company_bio
+    };
+  }
+}
+```
+
+Now we will take care of the session and workshop speakers. As long as we need to reach a new endpoint to get the speakers information we need a new provider to handle the request.
+So we follow the same steps we have been following to create a provider:
+* Use de Ionic CLI to generate the file (```ionic g provider speaker``)
+* Rename the file to **speaker.service.ts** and the class to **SpeakerService**.
+* Make http private
+* Add the service to the providers list in the **app.module.ts**
+
+Now we can work on our service. We will implement one method: **getSpeakers**
