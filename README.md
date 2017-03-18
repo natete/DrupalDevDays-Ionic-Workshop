@@ -50,7 +50,7 @@ Proceed similarly recycling Page2 into Session:
 * **session.ts**:  
   * Change the selector name from _page-page2_ to _page-session_
   * Change the templateUrl from _page2.html_ to _session.html_
-  * Change the class name from _Page2_ to _SessionPage_
+  * Change the class name from _Page2_ to _SessionPage_ and don't forget any reference "this.navCtrl.push(SessionPage, "
 * **session.scss**: change the selector from _page-page2_ to _page-session_
 * **app.module.ts**: 
   * Change the _Page2_ import from ```import { SessionPage } from '../pages/page2/page2';``` to ```import { SessionPage } from '../pages/session/session';```
@@ -130,7 +130,7 @@ Once we have our library installed we need to import it in our app.component.ts 
 import * as moment from 'moment';
 ```
 
-Now we have available moment in this file and we can create an array of dates like this:
+Now we have available moment in this file and we can create an array of dates like this in our class inside the app.component.ts file:
 
 ```typescript
 dates = [
