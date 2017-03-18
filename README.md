@@ -94,7 +94,7 @@ Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-linu
  your system. Finally add the following paths to your PATH env variables (editing .bashrc)
  
 ```bash
-ANDROID_HOME=path-to-the-folder-where-android-was-unzipped/android-sdk-linux
+ANDROID_HOME=path-to-the-folder-where-android-was-unzipped
 ANDROID_TOOLS=$ANDROID_HOME/tools
 ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
 ```
