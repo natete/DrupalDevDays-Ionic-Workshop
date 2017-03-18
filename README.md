@@ -201,4 +201,180 @@ So we follow the same steps we have been following to create a provider:
 * Make http private
 * Add the service to the providers list in the **app.module.ts**
 
-Now we can work on our service. We will implement one method: **getSpeakers**
+Now we can work on our service. We will implement one method: **getSpeakers** that receivees an array of speakers id and returns an Observable of Speaker.
+The method will make a get request to the endpoint that we will define as a constant as usual. Then we will map the result to get the json value of the response.:
+```typescript
+@Injectable()
+export class SpeakerService {
+
+  private readonly drupalUrl = 'https://seville2017.drupaldays.org/api/users';
+
+  constructor(private http: Http) { }
+
+  getSpeakers(speakersIds: string[]): Observable<any[]> {
+    return this.http
+               .get(`${this.drupalUrl}/${speakersIds.join(',')}`)
+               .map(res => res.json());
+  }
+}
+```
+
+Don't forget to add the corresponding imports (for Observable and Speaker).
+
+Let's use the service too see what do we get from the server now. In our **SessionService** we will add a private method to build the session details instead of just creating a new session from the raw session coming from the server.
+This method will create the new Session but also will take care of calling the speakerService to retrieve the speakers info if needed. For now we will print in the console what we get from the server:
+
+```typescript
+getSession(sessionId: string): Observable<SessionDetails> {
+  return this.http
+             .get(`${this.drupalUrl}/${sessionId}`)
+             .map(res => res.json()[0])
+             .map(rawSessionDetails => this.buildSession(rawSessionDetails));
+}
+
+private buildSession(rawSessionDetails): SessionDetails {
+  const session = new SessionDetails(rawSessionDetails);
+
+  if (session.type !== 'keynote') {
+    this.speakerService.getSpeakers(rawSessionDetails.field_user_ref)
+    .subscribe(speakers => console.log(speakers));
+  }
+
+  return session;
+}
+```
+
+We get something similar to this:
+![basic_speakr](./images/basic_speaker.png)
+
+Now we must work on our Speaker class to make it compatible with this response. We add a nickname and modify the constructor to accept the values coming from the raw speaker.
+We should end up with a Speaker class like this:
+```typescript
+import { Company } from './company';
+
+export class Speaker {
+  name: string;
+  avatar: string;
+  nickname?: string;
+  position?: string;
+  bio?: string;
+  company?: Company;
+
+  constructor(rawSpeaker: any = {}) {
+    this.name = rawSpeaker.field_speaker_full_name || rawSpeaker.field_register_name;
+    this.avatar = rawSpeaker.speaker_image || rawSpeaker.uri || 'assets/images/avatar.svg';
+    this.nickname = rawSpeaker.name;
+    this.position = rawSpeaker.field_speaker_position;
+    this.bio = rawSpeaker.field_speaker_bio;
+
+    if (typeof rawSpeaker.field_company_name !== 'undefined') {
+      this.company = {
+        name: rawSpeaker.field_company_name,
+        logo: rawSpeaker.company_logo,
+        bio: rawSpeaker.field_company_bio
+      };
+    }
+  }
+}
+```
+
+Now we can let the service to handle the response so it returns the array of speakers itself.
+```typescript
+getSpeakers(speakersIds: string[]): Observable<Speaker[]> {
+  return this.http
+             .get(`${this.drupalUrl}/${speakersIds.join(',')}`)
+             .map(res => res.json())
+             .map(rawSpeakers => rawSpeakers.map(rawSpeaker => new Speaker(rawSpeaker)));
+}
+```
+
+Now we must add this speakers to the **SessionDetails** class, in this case we will let the speakers attribute be of type Observable<Speaker[]>.
+We can use this type and instead of a "concrete" class and let the view handle the Observable. 
+To handle keynote speakers we can use the constructor of the class we already have to create the speaker instance and wrap it into an Oservable.
+Then our SessionDetails class (session-details.ts) should look like this:
+
+```typescript
+import { Speaker } from './speaker';
+import { Observable } from 'rxjs';
+
+export class SessionDetails {
+  title: string;
+  description: string;
+  type: string;
+  level?: string;
+  track?: string;
+  room?: string;
+  speakers?: Observable<Speaker[]>;
+
+  constructor(rawSessionDetails: any = {}) {
+    this.title = rawSessionDetails.title;
+    this.description = rawSessionDetails.body;
+    this.type = rawSessionDetails.field_session_type || 'keynote';
+    this.level = rawSessionDetails.field_session_level;
+    this.track = rawSessionDetails.field_session_track_type;
+    this.room = rawSessionDetails.field_room;
+
+    if (this.type === 'keynote') {
+
+      const speaker = new Speaker(rawSessionDetails);
+
+      this.speakers = Observable.of([speaker]);
+    }
+  }
+}
+```
+
+This is one way of creating an observable from a given value. Remember to put the speaker inside of an array to fullfill the return type.
+
+The session and workshop speakers will be handled from the **SessionService**. Instead of printing in console the result of the call to the SpeakerService we will assign the Observable to the speakers variable.
+
+```typescript
+private buildSession(rawSessionDetails): SessionDetails {
+  const session = new SessionDetails(rawSessionDetails);
+
+  if (session.type !== 'keynote') {
+    session.speakers = this.speakerService.getSpeakers(rawSessionDetails.field_user_ref);
+  }
+
+  return session;
+}
+```
+
+Now it's time to show the speakers in the SessionDetailsPage. We will use an avatar list again. In this case, we want use virtual scroll though, so it will be simpler.
+Before the description of the section we will add our list:
+```html
+<ion-list>
+  <ion-item *ngFor="let speaker of session.speakers">
+    <ion-avatar item-left>
+      <img [src]="speaker.avatar">
+    </ion-avatar>
+
+    <h2>{{speaker.name}}</h2>
+    <ion-note text-wrap>{{speaker.nickname || speaker.position}}</ion-note>
+    <p [innerHtml]="speaker.bio" text-wrap></p>
+    <ng-container *ngIf="speaker.company">
+      <h2>{{speaker.company.name}}</h2>
+      <img class="company-logo" [src]="speaker.company.logo">
+      <p [innerHtml]="speaker.company.bio" text-wrap></p>
+    </ng-container>
+  </ion-item>
+</ion-list>
+```
+
+Let's give it a try!
+![async_error](./images/async_error.png)
+
+We get an error! Angular is telling us that **ngFor only supports binding to Iterables such as Arrays.**
+This is caused because we are trying to iterate over an Observable and this is not posible. We must unwrap it before. We will use the [**async** built in pipe](https://angular.io/docs/ts/latest/api/common/index/AsyncPipe-pipe.html) for this work.
+Just adding ** | async** after _let speaker of session.speakers_ should fix it and you should be able to see the speakers now.
+![speaker](./images/speakers.png)
+
+As a final touch we add a little bit of styling to the **company-logo** class (in the session.scss file):
+```scss
+.company-logo {
+  width: 50%;
+}
+```
+
+We have the session details working just fine right now. Time to jump to the next branch to keep coding!
+
