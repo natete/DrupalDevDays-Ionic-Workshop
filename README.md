@@ -67,9 +67,11 @@ ionViewDidLoad() {
 }
 ```
 
-Maybe your IDE is warning you that this.programService wasn't defined. You need to import ProgramService and inject in our class like the next one:
+Maybe your IDE is warning you that this.programService wasn't defined. You need to import ProgramService and inject it in our class like this:
 ```typescript
-constructor(public navCtrl: NavController, private navParams: NavParams, private programService : ProgramService) {
+constructor(public navCtrl: NavController, 
+            private navParams: NavParams, 
+            private programService : ProgramService) {
     this.title = (this.navParams.data as Moment).format('DD dddd');
   }
 ```
