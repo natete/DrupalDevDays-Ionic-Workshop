@@ -3,11 +3,11 @@
 
 [**1. Ionic Native**](#1-ionic-native)
 
-[**2. Integrating with DevicePush](#2-integrating-with-devicepush)
+[**2. Integrating with DevicePush**](#2-integrating-with-devicepush)
 
 [**3. Integrating the Calendar**](#3-integrating-the-calendar)
 
-[**4. Adding feedback to improve the UX**](#4-adding feedback to improve the UX)
+[**4. Adding feedback to improve the UX**](#4-adding-feedback-to-improve-the-UX)
 
 ## 1. Ionic Native
 
