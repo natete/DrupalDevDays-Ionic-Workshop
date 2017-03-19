@@ -16,7 +16,14 @@ So we will bind the _click_ event of the _ion-item_ element to a **goToSession**
 goToSession(session: Session): void {
   // We don't want to see the details of the breaks.
   if (session.type) {
-    this.navCtrl.push(SessionPage, { sessionId: session.id, date: this.navParams.data, startTime: session.startTime, endTime: session.endTime });
+    this.navCtrl.push(SessionPage, 
+      {
+        sessionId: session.id,
+        date: this.navParams.data,
+        startTime: session.startTime,
+        endTime: session.endTime 
+      }
+    );
   }
 }
 ```
