@@ -112,8 +112,8 @@ Now it's really easy to send notifications using the device push dashboard!
 ![dashboard_send](./images/dashboard_send.png)
 
 And our device should be receiving our notifications:
-![notificaton_open](./images/notification_open.png)
-![notificaton_closed](./images/notification_closed.png)
+
+![notificaton_open](./images/notification_open.png) ![notificaton_closed](./images/notification_closed.png)
 
 ## 3. Integrating the Calendar
 
@@ -171,6 +171,7 @@ Next we must add something in our Session page to call this method. In this case
 ```
 
 Our application should look like this now:
+
 ![calendar_button](./images/calendar_button.png)
 
 The last step now is adding the corresponding method in our Session class:
@@ -186,9 +187,11 @@ addToCalendar() {
 ```
 In this method we get the start and end dates and call the corresponding service method. Don't forget to add the service injection in your controller as we have been doing.
 Once we try to add an event to the calendar for the first time the plugin will handle itself the permissions and will show a screen asking the user for the corresponding permission:
+
 ![calendar_permission](./images/calendar_permission.png)
 
 If you allow the app to access the calendar our event should be now in our calendar:
+
 ![calendar_event](./images/calendar_event.png)
 
 ## 4. Adding feedback to improve the UX
@@ -250,6 +253,5 @@ $colors: (
 ```
 
 Now we hava a much better UX.
-![toast_success](./images/toast_success.png)
-![toast_warn](./images/toast_warn.png)
-![toast_error](./images/toast_error.png)
+
+![toast_success](./images/toast_success.png) ![toast_warn](./images/toast_warn.png) ![toast_error](./images/toast_error.png)
