@@ -7,7 +7,7 @@
 
 [**3. Integrating the Calendar**](#3-integrating-the-calendar)
 
-[**4. Adding feedback to improve the UX**](#4-adding-feedback-to-improve-the-UX)
+[**4. Adding feedback to improve the UX**](#4-adding-feedback-to-improve-the-ux)
 
 ## 1. Ionic Native
 
