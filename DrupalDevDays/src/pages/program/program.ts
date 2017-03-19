@@ -49,7 +49,8 @@ export class ProgramPage {
       this.navCtrl.push(SessionPage, {
         sessionId: session.id,
         date: this.navParams.data,
-        startTime: session.startTime
+        startTime: session.startTime,
+        endTime: session.endTime
       });
     }
   }

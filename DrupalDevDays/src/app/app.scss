@@ -13,3 +13,23 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+ion-toast {
+  &.success {
+    .toast-wrapper {
+      background-color: map_get($colors, secondary);
+    }
+  }
+
+  &.warn {
+    .toast-wrapper {
+      background-color: map_get($colors, warn);
+    }
+  }
+
+  &.error {
+    .toast-wrapper {
+      background-color: map_get($colors, danger);
+    }
+  }
+}
