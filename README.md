@@ -1,4 +1,4 @@
-# DrupalDevDays-Ionic-Workshop
+# Installing Ionic
 
 [**1. Installing required software.**](#1-installing-required-software)
 
