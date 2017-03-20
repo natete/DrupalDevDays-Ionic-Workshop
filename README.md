@@ -1,8 +1,8 @@
 # Step 05 What to do next
 
-We have a good prove of concept now but there are a lot of things we can do to improve our application:
+We have a good prove of concept now, but there are a lot of things we can do to improve our application:
 
-* Add loading spinner while the requests are being resolved. The [Loading Controller](http://ionicframework.com/docs/v2/components/#loading) might be useful for this task.
+* Add a loading spinner while the requests are being resolved. The [Loading Controller](http://ionicframework.com/docs/v2/components/#loading) might be useful for this task.
 * Add error handling to your http requests.
 * Add an icon and spalsh image. Check the [documentation](http://ionicframework.com/docs/cli/icon-splashscreen.html) to learn how to generate the different versions of each file.
 * Learn about more [components](http://ionicframework.com/docs/v2/components/) and [plugins](http://ionicframework.com/docs/v2/native/) to add more features to your application.
