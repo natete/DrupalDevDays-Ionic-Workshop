@@ -66,7 +66,7 @@ Next we will create a new provider to handle the logic related to notifications,
 ionic g provider notification
 ```
 As we did before we rename both, the resulting file and class to **notification.service.ts** and **NotificationService**. Don't forget to add the provider to the providers list in the **app.module.ts**.
-This service will be really simple because the plugin is really simple and easy to use. We add a public **init** method that initializes the service on the startup. This method registers the device in DevicePush and adds a listener to the received notifications.
+This service will be really simple because the plugin is really simple and easy to use. We add a public **init** method that initializes the service on the startup. This method registers the device in [DevicePush](https://www.devicepush.com/) and adds a listener to the received notifications.
 ```typescript
 init() {
   devicePush.register({
