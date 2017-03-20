@@ -49,15 +49,31 @@ getProgram(date: Moment): Observable<any[]> {
              .map(res => res.json());
 }
 ```
+Don't forget to import Observable and Moment in the program.service.ts
+```
+import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
+import Moment = moment.Moment;
+```
 
 We will improve this method later, now we are gonna give it a try.
 We will go back to our _program.ts_ file and add a new method called **ionViewDidLoad**. This method is a lifecycle hook and it will be called by Ionic once the page has been loaded. It's then the moment to request the asynchronous content of the page.
+
 In this method we will call our service method and then subscribe to the result and print it to the console to check if it's working:
 ```typescript
 ionViewDidLoad() {
   this.programService.getProgram(this.navParams.data as Moment)
       .subscribe(program => console.log(program));
 }
+```
+
+Maybe your IDE is warning you that this.programService wasn't defined. You need to import ProgramService and inject it in our class like this:
+```typescript
+constructor(public navCtrl: NavController, 
+            private navParams: NavParams, 
+            private programService : ProgramService) {
+    this.title = (this.navParams.data as Moment).format('DD dddd');
+  }
 ```
 
 You should now be getting something like this:
@@ -77,7 +93,7 @@ export class Session {
   startTime: string;
   endTime: string;
   level?: string;
-  target?: string;
+  track?: string;
   type?: string;
   venue?: string;
 }
@@ -94,13 +110,13 @@ We can add now a constructor that takes one of the objects from Drupal an return
     this.startTime = times && times[0].trim();
     this.endTime = times && times[1].trim();
     this.level = rawSession.field_session_level;
-    this.target = rawSession.field_session_track_type;
+    this.track = rawSession.field_session_track_type;
     this.type = rawSession.type;
     this.venue = rawSession.field_break_description || rawSession.field_room;
   }
 ```
 
-We can use this new class definition to map our response adding a new map statement in our service and change the returned type to Observable<Session[]>:
+We can use this new class definition to map our response adding a new map statement in our service and change the returned type to Observable<Session[]> (don't forget to import Session class):
 ```typescript
   getProgram(date: Moment): Observable<Session[]> {
     const programId = this.dates[date.format('YYYY-MM-D')];
@@ -119,7 +135,7 @@ We also can take advantage of the typing and sort the response by its starting d
 ## 3. Representing data
 
 We're ready to show some data in our page. We will use [a Ionic 2 list](http://ionicframework.com/docs/v2/components/#lists) in combination with [a Ionic Virtual Scroll](http://ionicframework.com/docs/v2/api/components/virtual-scroll/VirtualScroll/) to be more performant.
-The first step will be to set the data we get from the service into a variable to be accessible from the view. We declare a _sessions_ variable of type _Session[]_ and then we swap the console.log statement for an assignation, ```this.sessions = program```.
+The first step will be to set the data we get from the service into a variable to be accessible from the view. We declare a _sessions_ variable of type _Session[]_ and then we swap the console.log statement for an assignation in the _program.ts_ file, ```this.sessions = program```.
 We can then start with the markup, so we go to the program.html file. First we will define **ion-list** element  with the needed attributes for the **virtualScroll** with a **ion-item** with the **virtuslItem** attribute inside and we will show the title of the session:
 
 ```html
@@ -165,24 +181,35 @@ Then we bind the returned header to oure _ion-item-divider_ with a **virtualItem
 
 The color attribute is another feature of Ionic that allows to assing theme defined colors to elements. You can check this colors in [this file](./DrupalDevDays/src/theme/variables.scss). In this case we assign the light color to set a light gray to our dividers. 
 
+You should have the _item-list_ like this:
+```html
+<ion-list [virtualScroll]="sessions" [headerFn]="getStartTime">
+    <ion-item-divider *virtualHeader="let startTime" color="light">{{startTime}}</ion-item-divider>
+
+    <ion-item *virtualItem="let session">
+      <h2 [innerHtml]="session.title" text-wrap></h2>
+    </ion-item>
+  </ion-list>
+```
+
 ## 4. Making things pretty
 
-Let's do our list look a little bit better by adding an image to represent the target of each session.
+Let's do our list look a little bit better by adding an image to represent the track of each session.
 But first things first, download [this zip file](./images.zip) and unzip it in the _src/assets_ folder. You should end up with a _src/assets/images_ folder containing the nine image files we will be using.
 We will use the [avatar-list](http://ionicframework.com/docs/v2/components/#avatar-list) to show this image. This image will deppend on the type and track of session.
-To achieve this we will create a method in our page class that will return the url of the image depending on the session:
+To achieve this we will create a method in our ProgramPage class that will return the url of the image depending on the session:
 ```typescript
   getImage(session: Session): string {
     if (session.type) {
-      const imageName: string = this.getImageNameFromTarget(session.target);
+      const imageName: string = this.getImageNameFromTrack(session.track);
       return `assets/images/${imageName}.svg`
     } else {
       return 'assets/images/poison.svg';
     }
   }
 
-  private getImageNameFromTarget(target: string): string {
-    const result = target || 'other';
+  private getImageNameFromTrack(track: string): string {
+    const result = track || 'other';
     return result.toLowerCase()
                  .replace(' ', '-');
   }
@@ -224,4 +251,6 @@ This is what we have so far.
 
 ![detailed_list](./images/detailed_list.png)
 
-Time to start working on the **Session Page**. Jump to the next branch to keep coding.
+The final touch, we can see that Ionic is asking as to provide an "approxItemHeight" input to ensure proper virtual scroll rendering, so we will add this attribute to the _ion-list_ element with a value of 106px, the most common height of our item. This will allow Ionic calculate the number of items it can display.
+
+Now we're ready to start working on the **Session Page**. Jump to the next branch to keep coding.
