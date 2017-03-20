@@ -93,7 +93,7 @@ You can install Android Studio which has Android SDK files in it or just install
 Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-linux.zip) and unzip the file anywhere in your system. Finally add the following paths to your PATH env variables (editing .bashrc)
  
 ```bash
-ANDROID_HOME=path-to-the-folder-where-android-was-unzipped/android-sdk-linux
+ANDROID_HOME=path-to-the-folder-where-android-was-unzipped
 ANDROID_TOOLS=$ANDROID_HOME/tools
 ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
 ```
@@ -113,7 +113,7 @@ To create the ionic application we will use the Ionic CLI.
 ionic start DrupalDevDays sidemenu --skip-npm --v2
 ```
 
-This will create a basic working application. Go to the myApp directory and download the node dependencies of the application.
+This will create a basic working application. Go to the DrupalDevDays folder and download the node dependencies of the application.
 
 ##### Using yarn
 
