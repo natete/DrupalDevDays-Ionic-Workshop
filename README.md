@@ -86,7 +86,7 @@ ionic -v
 
 ### 1.4 Installing Android SDK (You won't need this until last step)
 
-You can install Android Studio which has Android SDK files in it or just install the command line tools.
+You can install Android Studio which has Android SDK files in it or just install the command line tools. (You must have Java installed)
 
 ##### Using Linux
 
