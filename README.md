@@ -84,14 +84,13 @@ This will install both Ionic and Cordova CLI globally. Check everything is worki
 ionic -v
 ```
 
-### 1.4 Installing Android SDK
+### 1.4 Installing Android SDK (You won't need this until last step)
 
 You can install Android Studio which has Android SDK files in it or just install the command line tools.
 
 ##### Using Linux
 
-Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-linux.zip) and unzip the file anywhere in
- your system. Finally add the following paths to your PATH env variables (editing .bashrc)
+Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-linux.zip) and unzip the file anywhere in your system. Finally add the following paths to your PATH env variables (editing .bashrc)
  
 ```bash
 ANDROID_HOME=path-to-the-folder-where-android-was-unzipped/android-sdk-linux
@@ -100,9 +99,11 @@ ANDROID_PLATFORM_TOOLS=$ANDROID_HOME/platform-tools
 ```
 
 ##### Using OSX
+Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-macosx.zip) and unzip the file anywhere in your system. Finally add the following paths to your PATH env variables (editing .bash_profile or from command line)
 
 
 ##### Using Windows
+Download [this file](https://dl.google.com/android/repository/tools_r25.2.3-windows.zip?hl=es-419) and unzip the file anywhere in your system. Finally add the following paths to your PATH env variables.
 
 ## 2. Create basic Ionic project
 
@@ -112,8 +113,7 @@ To create the ionic application we will use the Ionic CLI.
 ionic start DrupalDevDays sidemenu --skip-npm --v2
 ```
 
-This will create a basic working application. Go to the myApp directory and download the node dependencies of the 
-application.
+This will create a basic working application. Go to the myApp directory and download the node dependencies of the application.
 
 ##### Using yarn
 
